@@ -41,6 +41,7 @@ _loop:
 
 set_maximum :
 	mov ebx, [answer]
+	mov [first], ebx
 	mov [maximum],ebx
 	jmp init_done
 	
