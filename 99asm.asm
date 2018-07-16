@@ -1,16 +1,36 @@
 extern printf
+extern scanf
 extern exit
 
 global _start
 
 SECTION .data
+	info db "Choose a number 1: whole 99dan,  N: N9dan -> ",0
+	strFormat db "%s",0
+	scanfFormat db "%d",0
 	format db "%d * %d = %d",10,0
 	first dd 2
 	second dd 2
-
+	maximum dd 19
+	answer dd 0
 SECTION .text
 
 _start:
+	push info
+	push strFormat
+	call printf
+	add esp,8
+
+	push answer
+	push scanfFormat
+	call scanf
+	add esp,8
+
+	mov ebx, [answer]
+	cmp ebx, 1
+	jne set_maximum
+init_done:
+
 	mov ecx,0xff
 _loop:
 	call print_str
@@ -18,11 +38,17 @@ _loop:
 	loop _loop
 	call _end
 
+
+set_maximum :
+	mov ebx, [answer]
+	mov [maximum],ebx
+	jmp init_done
+	
 inc_first:
-	mov edi, 1
+	mov edi, 2
 	mov [second], edi ; reset second num to 1
 	mov edi,[first]
-	cmp edi,19
+	cmp edi,[maximum]
 	je _end
 	mov edi,[first]
 	inc edi
